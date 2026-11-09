@@ -1,0 +1,24 @@
+name: CI DevOps
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t devops-app .
+
+      - name: Run container and test
+        run: |
+          docker run -d --name app-container -p 3000:3000 devops-app
+          trap 'docker stop app-container' EXIT
+          sleep 5
+          curl -f http://localhost:3000 || exit 1
+          docker exec app-container npm test
