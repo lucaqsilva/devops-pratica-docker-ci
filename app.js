@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Erro Proposital' });
+  res.json({ message: 'DevOps Pratica Funcionando!' });
 });
 
 if (require.main === module) {
